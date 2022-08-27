@@ -7,8 +7,9 @@ const expressApp = express();
 expressApp.use(serveStatic(Properties.FRONTEND_BUILD_PATH, { index: false }));
 
 expressApp.get('/*', (_httpRequest, httpResponse) => {
-	//httpResponse.sendFile(ConfigProvider.FRONTEND_BUILD_PATH + 'index.html');
-	httpResponse.send('yo');
+	httpResponse.sendFile(Properties.FRONTEND_BUILD_PATH + '/index.html');
 });
 
-expressApp.listen(Properties.SERVER_PORT, () => console.log('server started'));
+expressApp.listen(Properties.SERVER_PORT, () => {
+	console.log(`server started on port ${Properties.SERVER_PORT}`);
+});
