@@ -2,7 +2,7 @@
 import path from "path";
 
 export class Properties {
-	public static readonly SERVER_PORT: number = 80;
+	public static readonly SERVER_PORT: number = 443;
 	public static readonly ROOT_PATH: string = this.resolveRootPath();
 	public static readonly FRONTEND_BUILD_PATH: string = this.resolveFrontendBuildPath(this.ROOT_PATH);
 

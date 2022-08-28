@@ -9,8 +9,8 @@
     "backend-clean-build": "cd backend && npm run clean-build",
     "backend-start": "cd backend && npm run start",
     "backend-dev": "cd backend && npm run dev",
-    "frontend-build": "cd frontend && ng build",
-    "frontend-dev": "cd frontend && ng dev"
+    "frontend-build": "cd frontend && npm run build",
+    "frontend-dev": "cd frontend && npm run dev"
   },
   "author": "",
   "license": "ISC"
