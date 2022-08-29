@@ -1,9 +1,11 @@
 import { Stream } from "../models/stream";
 
-export class StreamsService {
+export class StreamService {
     private static streams = new Map<string, Stream>();
 
-    public static add(socketId: string, title: string): void {
+    private constructor() {}
+
+    public static create(socketId: string, title: string): void {
         const stream: Stream = {
             socketId: socketId,
             title: title,
@@ -16,7 +18,7 @@ export class StreamsService {
         return Array.from(this.streams.values());
     }
 
-    public static delete(socketId: string) {
+    public static deleteIfExists(socketId: string) {
         this.streams.delete(socketId);
     }
 }

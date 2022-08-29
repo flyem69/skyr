@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import Peer from 'peerjs';
+import { SocketEvent } from 'src/app/enums/socket-event';
 import { StreamData } from 'src/app/models/stream-data';
 
 @Injectable({
@@ -29,14 +30,14 @@ export class StreamService {
 
 	start(stream: MediaStream): void {
 		this.stream = stream;
-		this.socket.on('viewerJoining', (userId) => {
-			this.peer.call(userId, stream);
-			console.log(`User ${userId} joined`);
+		this.socket.on(SocketEvent.VIEWER_JOINING, (viewerId) => {
+			this.peer.call(viewerId, stream);
+			console.log(`User ${viewerId} joined`);
 		});
-		this.socket.on('viewerLeaving', (userId) => {
-			console.log(`User ${userId} left`);
+		this.socket.on(SocketEvent.VIEWER_LEAVING, (viewerId) => {
+			console.log(`User ${viewerId} left`);
 		});
-		this.socket.emit('startStream');
+		this.socket.emit(SocketEvent.START_STREAM);
 		this.stream.getVideoTracks()[0].addEventListener('ended', () => {
 			this.endStream();
 		});
@@ -51,9 +52,9 @@ export class StreamService {
 	}
 
 	private endStream(): void {
-		this.socket.emit('endStream');
-		this.socket.off('viewerJoining');
-		this.socket.off('viewerLeaving');
+		this.socket.emit(SocketEvent.END_STREAM);
+		this.socket.off(SocketEvent.VIEWER_JOINING);
+		this.socket.off(SocketEvent.VIEWER_LEAVING);
 		this.stream = undefined;
 	}
 }

@@ -5,7 +5,8 @@ import serveStatic from 'serve-static';
 import { ExpressPeerServer } from 'peer';
 import { Properties } from './properties';
 import { Server } from 'socket.io';
-import { StreamsService } from './services/streams-service';
+import { SocketEvent } from './enums/socket-event';
+import { StreamService } from './services/stream-service';
 
 const keyPath = __dirname + '/ssl/key.pem';
 const certificatePath = __dirname + '/ssl/certificate.pem';
@@ -34,28 +35,29 @@ expressApp.get('/*', (_httpRequest, httpResponse) => {
 	httpResponse.sendFile(Properties.FRONTEND_BUILD_PATH + '/index.html');
 });
 
-// todo update parameters
-socketServer.on('connection', (socket) => {
-    socket.on('disconnect', () => {
-        StreamsService.delete(socket.id)
+socketServer.on(SocketEvent.CONNECTION, (socket) => {
+    socket.on(SocketEvent.DISCONNECT, () => {
+        StreamService.deleteIfExists(socket.id);
     });
-    socket.on('joinStream', (streamId, userId) => {
-        if (socket.id !== streamId) {
-            socket.join(streamId)
+
+    socket.on(SocketEvent.START_STREAM, (title: string) => {
+        StreamService.create(socket.id, title);
+    });
+    socket.on(SocketEvent.END_STREAM, () => {
+        StreamService.deleteIfExists(socket.id);
+    });
+
+    socket.on(SocketEvent.JOIN_STREAM, (socketId: string) => {
+        if (socket.id !== socketId) {
+            socket.join(socketId);
         }
-        socket.to(streamId).emit('viewerJoining', userId)
+        socket.to(socketId).emit(SocketEvent.VIEWER_JOINING, socket.id);
     });
-    socket.on('leaveStream', (streamId, userId) => {
-        socket.to(streamId).emit('viewerLeaving', userId)
-        if (socket.id !== streamId) {
-            socket.leave(streamId)
+    socket.on(SocketEvent.LEAVE_STREAM, (socketId: string) => {
+        socket.to(socketId).emit(SocketEvent.VIEWER_LEAVING, socket.id);
+        if (socket.id !== socketId) {
+            socket.leave(socketId);
         }
-    });
-    socket.on('startStream', (author) => {
-        StreamsService.add(socket.id, author)
-    });
-    socket.on('endStream', () => {
-        StreamsService.delete(socket.id)
     });
 });
 
