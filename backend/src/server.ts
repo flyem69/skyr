@@ -29,7 +29,12 @@ const peerServer = ExpressPeerServer(httpServer, {
 });
 
 expressApp.use(serveStatic(Properties.FRONTEND_BUILD_PATH, { index: false }));
+expressApp.use(express.json())
 expressApp.use(peerServer);
+
+expressApp.get('/api/streams', (_httpRequest, httpResponse) => {
+    httpResponse.json(StreamService.getAll());
+});
 
 expressApp.get('/*', (_httpRequest, httpResponse) => {
 	httpResponse.sendFile(Properties.FRONTEND_BUILD_PATH + '/index.html');
@@ -47,14 +52,14 @@ socketServer.on(SocketEvent.CONNECTION, (socket) => {
         StreamService.deleteIfExists(socket.id);
     });
 
-    socket.on(SocketEvent.JOIN_STREAM, (socketId: string) => {
+    socket.on(SocketEvent.JOIN_STREAM, (socketId: string, peerId: string) => {
         if (socket.id !== socketId) {
             socket.join(socketId);
         }
-        socket.to(socketId).emit(SocketEvent.VIEWER_JOINING, socket.id);
+        socket.to(socketId).emit(SocketEvent.VIEWER_JOINED, peerId);
     });
-    socket.on(SocketEvent.LEAVE_STREAM, (socketId: string) => {
-        socket.to(socketId).emit(SocketEvent.VIEWER_LEAVING, socket.id);
+    socket.on(SocketEvent.LEAVE_STREAM, (socketId: string, peerId: string) => {
+        socket.to(socketId).emit(SocketEvent.VIEWER_LEFT, peerId);
         if (socket.id !== socketId) {
             socket.leave(socketId);
         }

@@ -1,5 +1,5 @@
 <div class='stream-card'>
-	<a [routerLink]="['/streams', streamData.id]">
+	<a [routerLink]="['/streams', streamData.socketId]">
 		<div *ngIf="preview$ | async; then previewTemplate else iconTemplate"></div>
 	</a>
     <ng-template #previewTemplate>
@@ -14,6 +14,6 @@
     <ng-template #iconTemplate>
         <img class="stream-icon" (mouseenter)="enterPreview()" src="https://www.w3schools.com/images/lamp.jpg">
     </ng-template>
-    <div class="stream-id">{{streamData.id}}</div>
-    <div class="stream-author">{{streamData.author}}</div>
+    <div class="stream-id">{{streamData.socketId}}</div>
+    <div class="stream-title">{{streamData.title}}</div>
 </div>

@@ -1,6 +1,8 @@
 export enum SocketEvent {
 	START_STREAM = 'startStream',
 	END_STREAM = 'endStream',
-	VIEWER_JOINING = 'viewerJoining',
-	VIEWER_LEAVING = 'viewerLeaving',
+	JOIN_STREAM = 'joinStream',
+	LEAVE_STREAM = 'leaveStream',
+	VIEWER_JOINED = 'viewerJoined',
+	VIEWER_LEFT = 'viewerLeft',
 }

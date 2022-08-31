@@ -79,6 +79,22 @@ export class StreamsComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.removeScreenChangeListeners();
 	}
 
+	startStream(): void {
+		navigator.mediaDevices
+			.getDisplayMedia({
+				video: true,
+				audio: true,
+			})
+			.then(
+				(stream) => {
+					this.streamService.start(stream);
+				},
+				(err) => {
+					console.log(err);
+				}
+			);
+	}
+
 	private setScreenChangeListeners(): void {
 		this.smallerScreen.addEventListener('change', (event) => this.setSmallInputWidth(event));
 		this.standardScreen.addEventListener('change', (event) =>
@@ -107,7 +123,7 @@ export class StreamsComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	private loadStreams(): void {
 		this.isLoading = true;
-		this.streamService
+		this.streamService // todo handle error
 			.fetchAll()
 			.pipe(finalize(() => (this.isLoading = false)))
 			.subscribe((streams) => {
@@ -117,11 +133,11 @@ export class StreamsComponent implements OnInit, AfterViewInit, OnDestroy {
 			});
 	}
 
-	private createStreamCard(stream: StreamData): void {
+	private createStreamCard(streamData: StreamData): void {
 		const streamCard = this.streamCardTemplate.createEmbeddedView({
-			id: stream.id,
-			author: stream.author,
-			creationTime: stream.creationTime,
+			socketId: streamData.socketId,
+			title: streamData.title,
+			creationTime: streamData.creationTime,
 		});
 		this.streamCardsContainer.insert(streamCard);
 	}

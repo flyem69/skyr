@@ -18,7 +18,7 @@ export class StreamService {
         return Array.from(this.streams.values());
     }
 
-    public static deleteIfExists(socketId: string) {
+    public static deleteIfExists(socketId: string): void {
         this.streams.delete(socketId);
     }
 }

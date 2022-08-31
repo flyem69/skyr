@@ -1,5 +1,5 @@
 export interface StreamData {
-	id: string;
-	author: string;
+	socketId: string;
+	title: string;
 	creationTime: number;
 }
