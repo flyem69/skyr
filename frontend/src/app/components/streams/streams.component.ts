@@ -90,7 +90,7 @@ export class StreamsComponent implements OnInit, AfterViewInit, OnDestroy {
 					this.streamService.start(stream);
 				},
 				(err) => {
-					console.log(err);
+					console.log(err); // todo toast
 				}
 			);
 	}

@@ -6,7 +6,9 @@
     --mid-light: rgb(184, 184, 184);
     --strong-light: rgb(208, 208, 208);
     --red: rgb(200, 0, 0);
+    --weak-dark-filter: invert(25%);
     --strong-dark-filter: invert(13%);
+    --weak-light-filter: invert(60%);
     --strong-light-filter: invert(82%);
     --transition: 0.2s;
 }
