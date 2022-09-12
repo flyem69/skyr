@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Appearance } from 'src/app/enums/appearance';
+import { AppearanceService } from 'src/app/services/appearance.service';
 import { BehaviorSubject } from 'rxjs';
-import { DarkModeService } from 'src/app/services/dark-mode.service';
 
 @Component({
 	selector: 'app-switch',
@@ -9,22 +10,27 @@ import { DarkModeService } from 'src/app/services/dark-mode.service';
 })
 export class SwitchComponent implements OnInit {
 	@Input() subject!: BehaviorSubject<boolean>;
-	appearance$: BehaviorSubject<string>;
-	mode: string = '';
+	appearance: Appearance;
+	mode: string;
 
-	constructor(private darkModeService: DarkModeService) {
-		this.appearance$ = new BehaviorSubject<string>('');
+	constructor(private appearanceService: AppearanceService) {
+		this.appearance = appearanceService.get();
+		this.mode = this.resolveMode(false);
 	}
 
 	ngOnInit(): void {
-		this.darkModeService.bindAppearance(this.appearance$);
+		this.appearanceService.subscribe((appearance) => (this.appearance = appearance));
 		this.subject.subscribe((value) => {
-			this.mode = value ? 'on' : 'off';
+			this.mode = this.resolveMode(value);
 		});
 	}
 
 	toggle(): void {
 		const toggledValue: boolean = !this.subject.getValue();
 		this.subject.next(toggledValue);
+	}
+
+	private resolveMode(value: boolean): string {
+		return value ? 'on' : 'off';
 	}
 }

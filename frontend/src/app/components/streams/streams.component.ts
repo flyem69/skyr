@@ -9,7 +9,8 @@ import {
 	ViewContainerRef,
 } from '@angular/core';
 import { BehaviorSubject, finalize } from 'rxjs';
-import { DarkModeService } from 'src/app/services/dark-mode.service';
+import { Appearance } from 'src/app/enums/appearance';
+import { AppearanceService } from 'src/app/services/appearance.service';
 import { StreamData } from 'src/app/models/stream-data';
 import { StreamService } from 'src/app/services/stream.service';
 
@@ -27,7 +28,7 @@ export class StreamsComponent implements OnInit, AfterViewInit, OnDestroy {
 	private smallInputWidth: string;
 	private standardInputWidth: string;
 	private inputWidthChangeThreshold: number;
-	appearance$: BehaviorSubject<string>;
+	appearance: Appearance;
 	inputWidth$: BehaviorSubject<string>;
 	searchPhrase$: BehaviorSubject<string>;
 	smallerScreen: MediaQueryList;
@@ -35,11 +36,14 @@ export class StreamsComponent implements OnInit, AfterViewInit, OnDestroy {
 	intersectionObserver: IntersectionObserver;
 	isLoading: boolean;
 
-	constructor(private darkModeService: DarkModeService, private streamService: StreamService) {
+	constructor(
+		private appearanceService: AppearanceService,
+		private streamService: StreamService
+	) {
 		this.smallInputWidth = '300px';
 		this.standardInputWidth = '550px';
 		this.inputWidthChangeThreshold = 650;
-		this.appearance$ = new BehaviorSubject<string>('');
+		this.appearance = appearanceService.get();
 		this.inputWidth$ = new BehaviorSubject<string>(
 			window.innerWidth < this.inputWidthChangeThreshold
 				? this.smallInputWidth
@@ -67,7 +71,7 @@ export class StreamsComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	ngOnInit(): void {
-		this.darkModeService.bindAppearance(this.appearance$);
+		this.appearanceService.subscribe((appearance) => (this.appearance = appearance));
 	}
 
 	ngAfterViewInit(): void {

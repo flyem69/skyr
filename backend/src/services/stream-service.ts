@@ -5,7 +5,7 @@ export class StreamService {
 
     private constructor() {}
 
-    public static create(socketId: string, title: string): void {
+    static create(socketId: string, title: string): void {
         const stream: Stream = {
             socketId: socketId,
             title: title,
@@ -14,11 +14,11 @@ export class StreamService {
         this.streams.set(socketId, stream);
     }
 
-    public static getAll(): Stream[] {
+    static getAll(): Stream[] {
         return Array.from(this.streams.values());
     }
 
-    public static deleteIfExists(socketId: string): void {
+    static deleteIfExists(socketId: string): void {
         this.streams.delete(socketId);
     }
 }

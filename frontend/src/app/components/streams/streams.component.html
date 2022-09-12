@@ -1,11 +1,11 @@
 <div class="streams-layout">
-    <div [ngClass]="['streams-search', appearance$ | async]">
+    <div [ngClass]="['streams-search', appearance]">
         <app-input [width$]="inputWidth$" [placeholder]="'Search'" [value$]="searchPhrase$"></app-input>
     </div>
     <div class="streams">
         <div class="streams-add-card">
-            <div [ngClass]="['streams-add-card-button', appearance$ | async]" (click)="startStream()">
-                <div [ngClass]="['streams-add-card-button-icon', appearance$ | async]"></div>
+            <div [ngClass]="['streams-add-card-button', appearance]" (click)="startStream()">
+                <div [ngClass]="['streams-add-card-button-icon', appearance]"></div>
             </div>
         </div>
         <ng-container #streamCardsContainer></ng-container>
@@ -13,7 +13,7 @@
             <app-stream-card [streamData]="{ socketId: socketId, title: title, creationTime: creationTime }"></app-stream-card>
         </ng-template>
     </div>
-    <div [ngClass]="['streams-loader', appearance$ | async]" #loader>
+    <div [ngClass]="['streams-loader', appearance]" #loader>
         <app-loader *ngIf="isLoading"></app-loader>
     </div>
 </div>

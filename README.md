@@ -16,8 +16,8 @@ For development purposes you can [generate a self-signed certificate](https://no
 
 From the root directory of this project execute the following commands:
 
-1. `npm run frontend-dev`
-2. `npm run backend-dev`
+1. `npm run dev-frontend`
+2. `npm run dev-backend`
 
 Application should now be available locally with live reloading feature.
 

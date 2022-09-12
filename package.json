@@ -4,14 +4,14 @@
   "description": "skyr",
   "main": "index.js",
   "scripts": {
-    "backend-clean": "cd backend && npm run clean",
-    "backend-build": "cd backend && npm run build",
-    "backend-clean-build": "cd backend && npm run clean-build",
-    "backend-start": "cd backend && npm run start",
-    "backend-dev": "cd backend && npm run dev",
-    "frontend-build": "cd frontend && npm run build",
-    "frontend-dev": "cd frontend && npm run dev",
-    "start": "npm run frontend-build && npm run backend-start"
+    "clean-backend": "cd backend && npm run clean",
+    "build-backend": "cd backend && npm run build",
+    "clean-build-backend": "cd backend && npm run clean-build",
+    "start-backend": "cd backend && npm run start",
+    "dev-backend": "cd backend && npm run dev",
+    "build-frontend": "cd frontend && npm run build",
+    "dev-frontend": "cd frontend && npm run dev",
+    "start": "npm run build-frontend && npm run start-backend"
   },
   "author": "",
   "license": "ISC"

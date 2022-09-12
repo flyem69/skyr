@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Appearance } from 'src/app/enums/appearance';
+import { AppearanceService } from 'src/app/services/appearance.service';
 import { BehaviorSubject } from 'rxjs';
-import { DarkModeService } from 'src/app/services/dark-mode.service';
 import { FuelInputData } from 'src/app/models/fuel-input-data';
 import { InputRegex } from 'src/app/enums/input-regex';
 import { distinctUntilChanged } from 'rxjs/operators';
@@ -12,16 +13,16 @@ import { distinctUntilChanged } from 'rxjs/operators';
 })
 export class FuelComponent implements OnInit {
 	private lapTimeValidity$: BehaviorSubject<boolean>;
-	appearance$: BehaviorSubject<string>;
+	appearance: Appearance;
 	inputsData: { [name: string]: FuelInputData };
 	inputRegex: typeof InputRegex;
 	calcLock: boolean;
 	resultValue: BehaviorSubject<number>;
 	result: string;
 
-	constructor(private darkModeService: DarkModeService) {
+	constructor(private appearanceService: AppearanceService) {
 		this.lapTimeValidity$ = new BehaviorSubject<boolean>(true);
-		this.appearance$ = new BehaviorSubject<string>('');
+		this.appearance = appearanceService.get();
 		this.inputsData = {
 			lapTimeMin: this.getInputData(this.lapTimeValidity$),
 			lapTimeS: this.getInputData(this.lapTimeValidity$),
@@ -38,7 +39,7 @@ export class FuelComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		this.darkModeService.bindAppearance(this.appearance$);
+		this.appearanceService.subscribe((appearance) => (this.appearance = appearance));
 		this.resultValue.pipe(distinctUntilChanged()).subscribe((value) => {
 			this.result = value + ' l';
 		});

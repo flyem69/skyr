@@ -1,6 +1,9 @@
 <div class="app">
     <app-header></app-header>
-    <div [ngClass]="['app-content', appearance$ | async]">
+    <div [ngClass]="['app-content', appearance]">
         <router-outlet></router-outlet>
     </div>
+    <ng-container *ngIf="modalEnabled">
+        <app-modal-core></app-modal-core>
+    </ng-container>
 </div>

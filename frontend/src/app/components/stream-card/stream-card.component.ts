@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { DarkModeService } from 'src/app/services/dark-mode.service';
 import { StreamData } from 'src/app/models/stream-data';
 
 @Component({
@@ -10,17 +9,13 @@ import { StreamData } from 'src/app/models/stream-data';
 })
 export class StreamCardComponent implements OnInit {
 	@Input() streamData!: StreamData;
-	appearance$: BehaviorSubject<string>;
 	preview$: BehaviorSubject<boolean>;
 
-	constructor(private darkModeService: DarkModeService) {
-		this.appearance$ = new BehaviorSubject<string>('');
+	constructor() {
 		this.preview$ = new BehaviorSubject<boolean>(false);
 	}
 
-	ngOnInit(): void {
-		this.darkModeService.bindAppearance(this.appearance$);
-	}
+	ngOnInit(): void {}
 
 	enterPreview(): void {
 		this.preview$.next(true);

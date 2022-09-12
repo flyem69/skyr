@@ -1,0 +1,5 @@
+<div class="modal-background" (click)="modalService.close()">
+    <div [ngClass]="['modal-foreground', appearance]" (click)="$event.stopPropagation()">
+        <ng-container #content></ng-container>
+    </div>
+</div>

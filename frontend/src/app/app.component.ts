@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { DarkModeService } from './services/dark-mode.service';
+import { Appearance } from './enums/appearance';
+import { AppearanceService } from './services/appearance.service';
+import { ModalService } from './services/modal.service';
+import { ModalType } from './enums/modal-type';
 
 @Component({
 	selector: 'app-root',
@@ -8,15 +10,16 @@ import { DarkModeService } from './services/dark-mode.service';
 	styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-	title: string;
-	appearance$: BehaviorSubject<string>;
+	modalEnabled: boolean;
+	appearance: Appearance;
 
-	constructor(private darkModeService: DarkModeService) {
-		this.title = 'my-page';
-		this.appearance$ = new BehaviorSubject<string>('');
+	constructor(private modalService: ModalService, private appearanceService: AppearanceService) {
+		this.modalEnabled = false;
+		this.appearance = appearanceService.get();
 	}
 
 	ngOnInit(): void {
-		this.darkModeService.bindAppearance(this.appearance$);
+		this.modalService.subscribe((modalType) => (this.modalEnabled = modalType != null));
+		this.appearanceService.subscribe((appearance) => (this.appearance = appearance));
 	}
 }

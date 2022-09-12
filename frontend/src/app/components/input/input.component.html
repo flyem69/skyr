@@ -1,5 +1,5 @@
 <input 
-    [ngClass]="['input', appearance$ | async, validity]"
+    [ngClass]="['input', appearance, validity]"
     [placeholder]="placeholder"
     [ngModel]="value$ | async"
     (ngModelChange)="change($event)"
