@@ -3,7 +3,5 @@
     <div [ngClass]="['app-content', appearance]">
         <router-outlet></router-outlet>
     </div>
-    <ng-container *ngIf="modalEnabled">
-        <app-modal-core></app-modal-core>
-    </ng-container>
+    <ng-container #modalContainer></ng-container>
 </div>

@@ -1,0 +1,10 @@
+<app-modal-core>
+    <div class="stream-title-modal">
+        <div>Enter stream title</div>
+        <app-input [width$]="titleInputWidth$" [value$]="title$"></app-input>
+        <div class="stream-title-modal-controls">
+            <app-button [text]="'Cancel'" (click)="cancel()"></app-button>
+            <app-button [text]="'Apply'" (click)="apply()"></app-button>
+        </div>
+    </div>
+</app-modal-core>

@@ -1,4 +1,4 @@
-<div class="centralized-layout">
+<app-centralized-layout>
     <div class="fuel">
         <div class="fuel-categories">
             <div class="fuel-race">
@@ -46,12 +46,11 @@
                     [value$]="inputsData['raceLength'].value$"
                     [valueRegex]="inputRegex.LIMIT_9999"
                     style="grid-area: h;"></app-input>
-                <div
-                    [ngClass]="['button', appearance]"
+                <app-button
+                    [text]="'Calculate race fuel'"
                     (click)="calcRaceFuel()"
                     style="grid-area: i;">
-                    Calculate race fuel
-                </div>
+                </app-button>
             </div>
             <div class="fuel-road">
                 <div style="justify-self: right; grid-area: a;">
@@ -74,14 +73,13 @@
                     [value$]="inputsData['distance'].value$"
                     [valueRegex]="inputRegex.LIMIT_9999"
                     style="grid-area: d;"></app-input>
-                <div
-                    [ngClass]="['button', appearance]"
+                <app-button
+                    [text]="'Calculate road fuel'"
                     (click)="calcRoadFuel()"
                     style="grid-area: e;">
-                    Calculate road fuel
-                </div>
+                </app-button>
             </div>
         </div>
         <div class="fuel-result">{{result}}</div>
     </div>
-</div>
+</app-centralized-layout>

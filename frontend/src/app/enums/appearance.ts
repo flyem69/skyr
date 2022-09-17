@@ -1,4 +1,4 @@
-export class Appearance {
-	public static readonly LIGHT = 'light';
-	public static readonly DARK = 'dark';
+export enum Appearance {
+	LIGHT = 'light',
+	DARK = 'dark',
 }

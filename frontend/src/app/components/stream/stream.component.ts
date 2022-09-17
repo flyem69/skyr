@@ -30,8 +30,6 @@ export class StreamComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnDestroy(): void {
-		if (this.streamSubscription$ !== undefined) {
-			this.streamSubscription$.unsubscribe();
-		}
+		this.streamSubscription$?.unsubscribe();
 	}
 }

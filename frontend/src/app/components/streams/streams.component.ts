@@ -11,6 +11,8 @@ import {
 import { BehaviorSubject, finalize } from 'rxjs';
 import { Appearance } from 'src/app/enums/appearance';
 import { AppearanceService } from 'src/app/services/appearance.service';
+import { Modal } from 'src/app/enums/modal';
+import { ModalService } from 'src/app/services/modal.service';
 import { StreamData } from 'src/app/models/stream-data';
 import { StreamService } from 'src/app/services/stream.service';
 
@@ -21,10 +23,11 @@ import { StreamService } from 'src/app/services/stream.service';
 })
 export class StreamsComponent implements OnInit, AfterViewInit, OnDestroy {
 	@ViewChild('streamCardsContainer', { read: ViewContainerRef })
-	streamCardsContainer!: ViewContainerRef;
+	private streamCardsContainer!: ViewContainerRef;
 	@ViewChild('streamCardTemplate', { read: TemplateRef })
-	streamCardTemplate!: TemplateRef<StreamData>;
-	@ViewChild('loader') private loader!: ElementRef<HTMLDivElement>;
+	private streamCardTemplate!: TemplateRef<StreamData>;
+	@ViewChild('loader')
+	private loader!: ElementRef<HTMLDivElement>;
 	private smallInputWidth: string;
 	private standardInputWidth: string;
 	private inputWidthChangeThreshold: number;
@@ -38,7 +41,8 @@ export class StreamsComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	constructor(
 		private appearanceService: AppearanceService,
-		private streamService: StreamService
+		private streamService: StreamService,
+		private modalService: ModalService
 	) {
 		this.smallInputWidth = '300px';
 		this.standardInputWidth = '550px';
@@ -83,20 +87,24 @@ export class StreamsComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.removeScreenChangeListeners();
 	}
 
-	startStream(): void {
-		navigator.mediaDevices
-			.getDisplayMedia({
-				video: true,
-				audio: true,
-			})
-			.then(
-				(stream) => {
-					this.streamService.start(stream);
-				},
-				(err) => {
-					console.log(err); // todo toast
-				}
-			);
+	initializeStream(): void {
+		this.modalService.open(Modal.STREAM_TITLE).then((title) => {
+			if (title != null) {
+				navigator.mediaDevices
+					.getDisplayMedia({
+						video: true,
+						audio: true,
+					})
+					.then(
+						(stream) => {
+							this.streamService.start(stream, title);
+						},
+						(err) => {
+							console.log(err); // todo toast
+						}
+					);
+			}
+		});
 	}
 
 	private setScreenChangeListeners(): void {

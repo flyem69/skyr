@@ -12,11 +12,12 @@ import { StreamData } from 'src/app/models/stream-data';
 	providedIn: 'root',
 })
 export class StreamService {
-	private stream?: MediaStream;
+	private stream: MediaStream | null;
 	private socket: Socket;
 	private peer: Peer;
 
 	constructor(private httpClient: HttpClient) {
+		this.stream = null;
 		this.socket = io({
 			port: 443,
 			path: '/socket',
@@ -30,7 +31,7 @@ export class StreamService {
 		});
 	}
 
-	start(stream: MediaStream): void {
+	start(stream: MediaStream, title: string): void {
 		this.stream = stream;
 		this.socket.on(SocketEvent.VIEWER_JOINED, (peerId) => {
 			this.peer.call(peerId, stream);
@@ -39,13 +40,13 @@ export class StreamService {
 		this.socket.on(SocketEvent.VIEWER_LEFT, (peerId) => {
 			console.log(`User ${peerId} left`);
 		});
-		this.socket.emit(SocketEvent.START_STREAM);
+		this.socket.emit(SocketEvent.START_STREAM, title);
 		this.stream.getVideoTracks()[0].addEventListener('ended', () => {
 			this.endStream();
 		});
 	}
 
-	join(socketId: string): Observable<MediaStream> {
+	join(socketId: string): Observable<MediaStream | null> {
 		return new Observable((joiner) => {
 			if (this.socket.id === socketId) {
 				joiner.next(this.stream);
@@ -87,6 +88,6 @@ export class StreamService {
 		this.socket.emit(SocketEvent.END_STREAM);
 		this.socket.off(SocketEvent.VIEWER_JOINED);
 		this.socket.off(SocketEvent.VIEWER_LEFT);
-		this.stream = undefined;
+		this.stream = null;
 	}
 }
