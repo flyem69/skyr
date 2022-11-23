@@ -64,6 +64,13 @@ socketServer.on(SocketEvent.CONNECTION, (socket) => {
             socket.leave(socketId);
         }
     });
+
+    socket.on(SocketEvent.REQUEST_PREVIEW, (socketId: string, peerId: string) => {
+        socket.to(socketId).emit(SocketEvent.PREVIEW_REQUESTED, peerId);
+    });
+    socket.on(SocketEvent.CLOSE_PREVIEW, (socketId: string, peerId: string) => {
+        socket.to(socketId).emit(SocketEvent.PREVIEW_CLOSED, peerId);
+    });
 });
 
 httpServer.listen(Properties.SERVER_PORT, () => {

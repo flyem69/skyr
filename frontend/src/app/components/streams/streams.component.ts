@@ -9,8 +9,10 @@ import {
 	ViewContainerRef,
 } from '@angular/core';
 import { BehaviorSubject, finalize } from 'rxjs';
+
 import { Appearance } from 'src/app/enums/appearance';
 import { AppearanceService } from 'src/app/services/appearance.service';
+import { EmittedStreamService } from 'src/app/services/emitted-stream.service';
 import { Modal } from 'src/app/enums/modal';
 import { ModalService } from 'src/app/services/modal.service';
 import { StreamData } from 'src/app/models/stream-data';
@@ -42,6 +44,7 @@ export class StreamsComponent implements OnInit, AfterViewInit, OnDestroy {
 	constructor(
 		private appearanceService: AppearanceService,
 		private streamService: StreamService,
+		private emittedStreamService: EmittedStreamService,
 		private modalService: ModalService
 	) {
 		this.smallInputWidth = '300px';
@@ -87,22 +90,10 @@ export class StreamsComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.removeScreenChangeListeners();
 	}
 
-	initializeStream(): void {
+	startStream(): void {
 		this.modalService.open(Modal.STREAM_TITLE).then((title) => {
 			if (title != null) {
-				navigator.mediaDevices
-					.getDisplayMedia({
-						video: true,
-						audio: true,
-					})
-					.then(
-						(stream) => {
-							this.streamService.start(stream, title);
-						},
-						(err) => {
-							console.log(err); // todo toast
-						}
-					);
+				this.emittedStreamService.emit(title);
 			}
 		});
 	}

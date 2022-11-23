@@ -1,6 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { finalize } from 'rxjs';
+import { Appearance } from 'src/app/enums/appearance';
 import { StreamData } from 'src/app/models/stream-data';
+import { AppearanceService } from 'src/app/services/appearance.service';
+import { ViewedStreamService } from 'src/app/services/viewed-stream.service';
 
 @Component({
 	selector: 'app-stream-card',
@@ -8,24 +11,37 @@ import { StreamData } from 'src/app/models/stream-data';
 	styleUrls: ['./stream-card.component.scss'],
 })
 export class StreamCardComponent implements OnInit {
-	@Input() streamData!: StreamData;
-	preview$: BehaviorSubject<boolean>;
+	@Input()
+	streamData!: StreamData;
+	previewed: boolean;
+	appearance: Appearance;
 
-	constructor() {
-		this.preview$ = new BehaviorSubject<boolean>(false);
+	constructor(
+		private viewedStreamService: ViewedStreamService,
+		private appearanceService: AppearanceService
+	) {
+		this.previewed = false;
+		this.appearance = appearanceService.get();
 	}
 
-	ngOnInit(): void {}
-
-	enterPreview(): void {
-		this.preview$.next(true);
+	ngOnInit(): void {
+		this.appearanceService.subscribe((appearance) => (this.appearance = appearance));
 	}
 
-	leavePreview(): void {
-		this.preview$.next(false);
+	preview(preview: HTMLVideoElement): () => void {
+		return () => {
+			this.viewedStreamService
+				.preview(this.streamData.socketId)
+				.pipe(finalize(() => console.log('DONE')))
+				.subscribe((stream) => {
+					preview.srcObject = stream;
+				});
+		};
 	}
 
-	afterPreviewInit(preview: HTMLVideoElement): void {
-		preview.src = 'https://www.w3schools.com/html/mov_bbb.mp4#t=0.5';
+	closePreview(): () => void {
+		return () => {
+			this.viewedStreamService.closePreview(this.streamData.socketId);
+		};
 	}
 }

@@ -9,12 +9,18 @@ import { AppearanceService } from 'src/app/services/appearance.service';
 	styleUrls: ['./input.component.scss'],
 })
 export class InputComponent implements OnInit {
-	@Input() value$!: BehaviorSubject<string>;
-	@Input() placeholder: string;
-	@Input() width$?: BehaviorSubject<string>;
-	@Input() valueRegex?: RegExp;
-	@Input() localValidity$?: BehaviorSubject<boolean>;
-	@Input() externalValidity$?: BehaviorSubject<boolean>;
+	@Input()
+	value$!: BehaviorSubject<string>;
+	@Input()
+	placeholder: string;
+	@Input()
+	width$?: BehaviorSubject<string>;
+	@Input()
+	valueRegex?: RegExp;
+	@Input()
+	localValidity$?: BehaviorSubject<boolean>;
+	@Input()
+	externalValidity$?: BehaviorSubject<boolean>;
 	appearance: Appearance;
 	validity: string;
 	width: string;

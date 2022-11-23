@@ -9,7 +9,8 @@ import { StreamService } from 'src/app/services/stream.service';
 	styleUrls: ['./stream.component.scss'],
 })
 export class StreamComponent implements OnInit, OnDestroy {
-	@ViewChild('player') private player!: ElementRef<HTMLVideoElement>;
+	@ViewChild('player')
+	private player!: ElementRef<HTMLVideoElement>;
 	private streamSubscription$?: Subscription;
 
 	constructor(private route: ActivatedRoute, private streamService: StreamService) {}

@@ -1,5 +1,5 @@
-import { BehaviorSubject, Observable } from 'rxjs';
 import { Appearance } from '../enums/appearance';
+import { BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
 
 @Injectable({

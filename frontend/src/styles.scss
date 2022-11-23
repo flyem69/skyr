@@ -1,4 +1,5 @@
 :root {
+    /* COLORS */
     --weak-dark: rgb(64, 64, 64);
     --mid-dark: rgb(48, 48, 48);
     --strong-dark: rgb(32, 32, 32);
@@ -10,12 +11,19 @@
     --strong-dark-filter: invert(13%);
     --weak-light-filter: invert(60%);
     --strong-light-filter: invert(82%);
+    /* ANIMATION */
     --transition: 0.2s;
+    /* FONT SIZE */
+    --default-font-size: 16px;
+    --bigger-font-size: 20px;
+    --biggerer-font-size: 25px;
+    --smaller-font-size: 14px;
 }
 
 body {
     margin: 0;
     font-family: sans-serif;
+    font-size: var(--default-font-size);
 }
 
 .light {

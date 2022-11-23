@@ -1,15 +1,15 @@
 import { AfterViewInit, Directive, Input } from '@angular/core';
 
 @Directive({
-	selector: '[appAfterElementInit]',
+	selector: '[appAfterViewInit]',
 })
-export class AfterElementInitDirective implements AfterViewInit {
-	@Input() appAfterElementInit?: (parameter: any | undefined) => any;
-	@Input() appAfterElementInitParameter?: any;
+export class AfterViewInitDirective implements AfterViewInit {
+	@Input()
+	appAfterViewInit?: () => void;
 
 	constructor() {}
 
 	ngAfterViewInit(): void {
-		this.appAfterElementInit?.(this.appAfterElementInitParameter);
+		this.appAfterViewInit?.();
 	}
 }

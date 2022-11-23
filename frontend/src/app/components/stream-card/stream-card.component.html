@@ -1,19 +1,23 @@
 <div class='stream-card'>
-	<a [routerLink]="['/streams', streamData.socketId]">
-		<div *ngIf="preview$ | async; then previewTemplate else iconTemplate"></div>
-	</a>
+	<div *ngIf="previewed; then previewTemplate else previewButtonTemplate"></div>
     <ng-template #previewTemplate>
-        <video
-            #preview
-            [ngClass]="['stream-preview']"
-            (mouseleave)="leavePreview()"
-            [appAfterElementInit]="afterPreviewInit"
-            [appAfterElementInitParameter]="preview">
-        </video>
+        <a [routerLink]="['/streams', streamData.socketId]">
+            <video
+                #previewElement
+                class="stream-preview"
+                (mouseleave)="previewed = false"
+                [appAfterViewInit]="preview(previewElement)"
+                [appOnDestroy]="closePreview()"
+                [muted]="'muted'"
+                autoplay>
+            </video>
+        </a>
     </ng-template>
-    <ng-template #iconTemplate>
-        <img class="stream-icon" (mouseenter)="enterPreview()" src="https://www.w3schools.com/images/lamp.jpg">
+    <ng-template #previewButtonTemplate>
+        <div [ngClass]="['stream-preview-button', appearance]" (click)="previewed = true">
+            Preview
+        </div>
     </ng-template>
-    <div class="stream-id">{{streamData.socketId}}</div>
     <div class="stream-title">{{streamData.title}}</div>
+    <div [ngClass]="['stream-id', appearance]">{{streamData.socketId}}</div>
 </div>

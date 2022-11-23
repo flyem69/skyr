@@ -9,7 +9,8 @@ import { BehaviorSubject } from 'rxjs';
 	styleUrls: ['./switch.component.scss'],
 })
 export class SwitchComponent implements OnInit {
-	@Input() subject!: BehaviorSubject<boolean>;
+	@Input()
+	subject!: BehaviorSubject<boolean>;
 	appearance: Appearance;
 	mode: string;
 

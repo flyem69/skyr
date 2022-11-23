@@ -5,7 +5,8 @@
     "build": "ng build",
     "dev": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "lint-fix": "ng lint --fix"
   },
   "private": true,
   "dependencies": {

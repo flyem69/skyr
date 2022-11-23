@@ -10,8 +10,7 @@
       ],
       "parserOptions": {
         "project": [
-          //"tsconfig.json"
-          "./frontend/tsconfig.json"
+          "tsconfig.json"
         ],
         "createDefaultProgram": true
       },
@@ -35,16 +34,6 @@
             "type": "element",
             "prefix": "app",
             "style": "kebab-case"
-          }
-        ],
-        "sort-imports": [
-          "error",
-          {
-            "ignoreCase": false,
-            "ignoreDeclarationSort": false,
-            "ignoreMemberSort": false,
-            "memberSyntaxSortOrder": ["none", "all", "multiple", "single"],
-            "allowSeparatedGroups": false
           }
         ],
         "prettier/prettier": [
